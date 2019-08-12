@@ -15,16 +15,16 @@ public class Message implements Serializable {
         contents = "DEFAULT CONSTRUCTOR CALL";
     }
 
-    public Message(Client c, Date t, String s, boolean b){
-        sender = c;
+    public Message(Date t, String s, boolean b){
+//        sender = c;
         time = t;
         contents = s;
         isCommand = b;
         System.out.println("MESSAGE CREATED");
     }
-
+    @Override
     public String toString(){
         //TODO ACKNOWLEDGE COMMANDS
-        return (sender.toString() + " (" + time + "): " +  contents);
+        return contents;
     }
 }

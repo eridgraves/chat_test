@@ -22,9 +22,6 @@ import javafx.stage.Stage;
 
 public class Client extends Application {
     // IO streams
-    ObjectOutputStream toServer = null;
-    ObjectInputStream fromServer = null;
-
 
     public String name;
 
@@ -50,7 +47,6 @@ public class Client extends Application {
 //        loginStage.show();
 
 
-
         // Panel p to hold the label and text field
         BorderPane paneForTextField = new BorderPane();
         paneForTextField.setPadding(new Insets(5, 5, 5, 5));
@@ -72,22 +68,21 @@ public class Client extends Application {
         ps.setTitle("Client"); // Set the stage title
         ps.setScene(scene); // Place the scene in the stage
         ps.show(); // Display the stage
-
-        try {
-            // Create a socket to connect to the server
-            @SuppressWarnings("resource")
-            Socket socket = new Socket("localhost", 4242);
-
-            // Create an input stream to receive data from the server
-            fromServer = new ObjectInputStream(socket.getInputStream());
-
-            // Create an output stream to send data to the server
-            toServer = new ObjectOutputStream(socket.getOutputStream());
-        }
-        catch (IOException ex) {
-            ta.appendText(ex.toString() + '\n');
-        }
-
+        tf.setOnAction(e -> {
+                    try {
+                        // Create a socket to connect to the server
+                        @SuppressWarnings("resource")
+                        Socket socket = new Socket("localhost", 4242);
+                        ObjectOutputStream toServer = new ObjectOutputStream(socket.getOutputStream());
+                        // Create an input stream to receive data from the server
+                        Message mes = new Message(new Date(), tf.getText(), false);
+                        toServer.writeObject(mes);
+                        // Create an output stream to send data to the server
+                        tf.setText("");
+                    } catch (IOException ex) {
+                        ta.appendText(ex.toString() + '\n');
+                    }
+                });
 
         // Set Client Username
         //this.name = tf.getText();
